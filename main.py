@@ -1,26 +1,36 @@
 from tkinter import *
 from tkinter.ttk import Combobox
-
+from data import dict
 
 def button_clicked():
-    print("Button clicked")
-    answer_lbl = Label(root, text="Ответ")
+    first = combo1.get()
+    second = combo2.get()
+    third = combo3.get()
+    fourth = combo4.get()
+    index = dict[third].index(fourth)
+    drill_diameter = dict[third][index + 1]
+    if second == 'Чугун' or second == 'Бронза' or second == 'Пластмасса':
+        drill_diameter = round(float(drill_diameter) - 0.1, 3)
+    answer_lbl = Label(root, text=f"Ответ: {drill_diameter} ")
     answer_lbl.grid(row=5, column=0)
 
 def change_combo(*args):
     first = combo1.get()
     second = combo2.get()
     third = combo3.get()
+    fourth = combo4.get()
+    result = []
+    for i, value in enumerate(dict[third]):
+        if i % 2 == 0:
+            result.append(value)
 
-    if first == 'Option 1' and second == 'Sub-Option 1' and third == 'Choice 1':
-        combo4['values'] = ['Result 1', 'Result 2', 'Result 3']
-    elif first == 'Option 2' and second == 'Sub-Option 4' and third == 'Choice 2':
-        combo4['values'] = ['Result 4', 'Result 5', 'Result 6']
-    elif first == 'Option 3' and second == 'Sub-Option 7' and third == 'Choice 3':
-        combo4['values'] = ['Result 7', 'Result 8', 'Result 9']
-    else:
-        combo4['values'] = []
-    combo4.current(0)
+    combo4['values'] = result
+
+    if first == 'Метрическая':
+        combo3['values'] = list(dict.keys())
+    elif first == 'Дюймовая':
+        combo3['values'] = ['В доработке']
+
 
 root = Tk()
 root.geometry("800x500")
@@ -35,8 +45,8 @@ combo2_lbl.grid(row=1, column=1)
 combo3_lbl = Label(root, text="Выберите размер")
 combo3_lbl.grid(row=2, column=1)
 
-combo3_lbl = Label(root, text="Выберите шаг")
-combo3_lbl.grid(row=3, column=1)
+combo4_lbl = Label(root, text="Выберите шаг")
+combo4_lbl.grid(row=3, column=1)
 
 combo1 = Combobox(root, values=['Метрическая', 'Дюймовая'], state='readonly')
 combo1.current(0)
@@ -48,7 +58,7 @@ combo2.current(0)
 combo2.bind("<<ComboboxSelected>>", change_combo)
 combo2.grid(row=1, column=0)
 
-combo3 = Combobox(root, values=['Choice 1', 'Choice 2', 'Choice 3'], state='readonly')
+combo3 = Combobox(root, values=['2', '2', '3'], state='readonly')
 combo3.current(0)
 combo3.bind("<<ComboboxSelected>>", change_combo)
 combo3.grid(row=2, column=0)
